@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Aplicacion_Trello.Pages.PorhacerPages"
+             Title="Tareas Por Hacer">
+
+    <!-- ListView para mostrar las tareas -->
+    <CollectionView x:Name="lstTareas" 
+                Grid.Row="2" 
+                SelectionMode="None"
+                Margin="16,0,16,0">
+        <CollectionView.ItemsLayout>
+            <LinearItemsLayout Orientation="Vertical" ItemSpacing="12" />
+        </CollectionView.ItemsLayout>
+        <CollectionView.EmptyView>
+            <VerticalStackLayout VerticalOptions="Center" HorizontalOptions="Center">
+                <Image Source="empty_tasks.png" HeightRequest="120" WidthRequest="120" Opacity="0.6" />
+                <Label Text="No hay tareas pendientes" 
+                   Margin="0,20,0,0"
+                   TextColor="{AppThemeBinding Light=#666666, Dark=#AAAAAA}"
+                   FontSize="18" />
+            </VerticalStackLayout>
+        </CollectionView.EmptyView>
+        <CollectionView.ItemTemplate>
+            <DataTemplate>
+                <Frame Margin="2" Padding="15" CornerRadius="10" 
+                   BorderColor="Transparent"
+                   BackgroundColor="{AppThemeBinding Light=White, Dark=#2D2D2D}"
+                   HasShadow="True">
+                    <Grid RowSpacing="8" ColumnSpacing="10">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <!-- Título y Fecha -->
+                        <Label Text="{Binding Titulo}" 
+                           Grid.Row="0" Grid.Column="0"
+                           FontSize="18" FontAttributes="Bold" 
+                           TextColor="{AppThemeBinding Light=#333333, Dark=White}"/>
+
+                        <Label Text="{Binding Fecha_entrega, StringFormat='{0:dd MMM yyyy}'}" 
+                           Grid.Row="0" Grid.Column="1"
+                           FontSize="14" 
+                           TextColor="{AppThemeBinding Light=#666666, Dark=#BBBBBB}"/>
+
+                        <!-- Materia con icono -->
+                        <HorizontalStackLayout Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Spacing="5">
+                            <Label Text="📚" FontSize="16"/>
+                            <Label Text="{Binding Materia}" 
+                               FontSize="16" FontAttributes="Bold"
+                               TextColor="{AppThemeBinding Light=#0066CC, Dark=#6699FF}"/>
+                        </HorizontalStackLayout>
+
+                        <!-- Descripción -->
+                        <Label Text="{Binding Descripcion}" 
+                           Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
+                           FontSize="14" LineBreakMode="WordWrap"
+                           TextColor="{AppThemeBinding Light=#555555, Dark=#CCCCCC}"/>
+
+                        <!-- Estado -->
+                        <Frame Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2"
+                           HorizontalOptions="Start" Padding="8,4" CornerRadius="20"
+                           BackgroundColor="{Binding Estado, Converter={StaticResource EstadoColorConverter}}">
+                            <Label Text="{Binding Estado}" 
+                               FontSize="12" FontAttributes="Bold" 
+                               TextColor="White"/>
+                        </Frame>
+                    </Grid>
+                </Frame>
+            </DataTemplate>
+        </CollectionView.ItemTemplate>
+    </CollectionView>
+
+</ContentPage>

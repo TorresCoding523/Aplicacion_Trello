@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Aplicacion_Trello.Pages.HomePage1"
+             Title="Classroom">
+
+    <Grid RowSpacing="0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/> <!-- Header row -->
+            <RowDefinition Height="Auto"/> <!-- Picker row -->
+            <RowDefinition Height="*"/>    <!-- Content row -->
+            <RowDefinition Height="Auto"/> <!-- Button row -->
+        </Grid.RowDefinitions>
+
+        <!-- Header with Title -->
+        <Grid Grid.Row="0" Padding="16,24,16,8" BackgroundColor="#2196F3">
+            <Label Text="Mis Tareas" 
+                   FontSize="28" 
+                   FontAttributes="Bold" 
+                   VerticalOptions="Center" 
+                   TextColor="White" >
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnTitleTapped" />
+                </Label.GestureRecognizers>
+            </Label>
+
+            <!-- Submenú para ordenar las tareas -->
+            <Frame Grid.Row="1" 
+                   Margin="210,-10,16,8"  
+                   Padding="2"
+                   CornerRadius="10"
+                   HasShadow="True"
+                   BorderColor="Transparent"
+                   BackgroundColor="{AppThemeBinding Light=White, Dark=#2D2D2D}">
+                <Picker x:Name="pickerOrdenar"
+                    Margin="8,0"
+                    SelectedIndexChanged="PickerOrdenarTareas_SelectedIndexChanged"
+                    Title="Ordenar por"
+                    FontSize="14"
+                    HorizontalOptions="Center"
+                    TextColor="{AppThemeBinding Light=#333333, Dark=White}">
+                    <Picker.Items>
+                        <x:String>Fecha de entrega</x:String>
+                        <x:String>Fecha de asignación</x:String>
+                        <x:String>Nombre</x:String>
+                        <x:String>Materia</x:String>
+                    </Picker.Items>
+                </Picker>
+            </Frame>
+        </Grid>
+
+        <!-- ListView para mostrar las tareas -->
+        <CollectionView x:Name="lstTareas" 
+                        Grid.Row="2" 
+                        SelectionMode="None"
+                        Margin="16,0,16,0">
+            <CollectionView.ItemsLayout>
+                <LinearItemsLayout Orientation="Vertical" ItemSpacing="12" />
+            </CollectionView.ItemsLayout>
+            <CollectionView.EmptyView>
+                <VerticalStackLayout VerticalOptions="Center" HorizontalOptions="Center">
+                    <Image Source="empty_tasks.png" HeightRequest="120" WidthRequest="120" Opacity="0.6" />
+                    <Label Text="No hay tareas pendientes" 
+                           Margin="0,20,0,0"
+                           TextColor="{AppThemeBinding Light=#666666, Dark=#AAAAAA}"
+                           FontSize="18" />
+                </VerticalStackLayout>
+            </CollectionView.EmptyView>
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Frame Margin="2" Padding="15" CornerRadius="10" 
+                           BorderColor="Transparent"
+                           BackgroundColor="{AppThemeBinding Light=White, Dark=#2D2D2D}"
+                           HasShadow="True">
+                        <Grid RowSpacing="8" ColumnSpacing="10">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <!-- New column for buttons -->
+                            </Grid.ColumnDefinitions>
+
+                            <!-- Título y Fecha -->
+                            <Label Text="{Binding Titulo}" 
+                                   Grid.Row="0" Grid.Column="0"
+                                   FontSize="18" FontAttributes="Bold" 
+                                   TextColor="{AppThemeBinding Light=#333333, Dark=White}"/>
+
+                            <Label Text="{Binding Fecha_entrega, StringFormat='{0:dd MMM yyyy}'}" 
+                                   Grid.Row="0" Grid.Column="1"
+                                   FontSize="14" 
+                                   TextColor="{AppThemeBinding Light=#666666, Dark=#BBBBBB}"/>
+
+                            <!-- Buttons for Edit and Delete -->
+                            <StackLayout Grid.Row="0" Grid.Column="2" Orientation="Horizontal" Spacing="5">
+                                <Button Text="✏️" 
+                                        FontSize="12"
+                                        WidthRequest="30"
+                                        HeightRequest="30"
+                                        Padding="0"
+                                        CornerRadius="15"
+                                        BackgroundColor="Transparent"
+                                        BorderColor="#0066CC"
+                                        BorderWidth="1"
+                                        Clicked="EditButton_Clicked"/>
+                                <Button Text="🗑️" 
+                                        FontSize="12"
+                                        WidthRequest="30"
+                                        HeightRequest="30"
+                                        Padding="0"
+                                        CornerRadius="15"
+                                        BackgroundColor="Transparent"
+                                        BorderColor="#FF6B00"
+                                        BorderWidth="1"
+                                        Clicked="DeleteButton_Clicked"/>
+                            </StackLayout>
+
+                            <!-- Materia con icono -->
+                            <HorizontalStackLayout Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Spacing="5">
+                                <Label Text="📚" FontSize="16"/>
+                                <Label Text="{Binding Materia}" 
+                                       FontSize="16" FontAttributes="Bold"
+                                       TextColor="{AppThemeBinding Light=#0066CC, Dark=#6699FF}"/>
+                            </HorizontalStackLayout>
+
+                            <!-- Descripción -->
+                            <Label Text="{Binding Descripcion}" 
+                                   Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3"
+                                   FontSize="14" LineBreakMode="WordWrap"
+                                   TextColor="{AppThemeBinding Light=#555555, Dark=#CCCCCC}"/>
+
+                            <!-- Estado -->
+                            <Frame Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3"
+                                   HorizontalOptions="Start" Padding="8,4" CornerRadius="20"
+                                   BackgroundColor="{Binding Estado, Converter={StaticResource EstadoColorConverter}}">
+                                <Label Text="{Binding Estado}" 
+                                       FontSize="12" FontAttributes="Bold" 
+                                       TextColor="White"/>
+                            </Frame>
+                        </Grid>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <!-- Botón flotante para agregar tareas -->
+        <Button Text="+ Agregar Tarea"
+                x:Name="btnAgregarTarea"
+                Grid.Row="3"
+                Margin="16,12,16,16"
+                HeightRequest="50"
+                CornerRadius="25"
+                FontAttributes="Bold"
+                TextColor="White"
+                BackgroundColor="#FF6B00"
+                Clicked="btnAgregarTarea_Clicked"/>
+    </Grid>
+    
+</ContentPage>

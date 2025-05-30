@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="Aplicacion_Trello.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:pages="clr-namespace:Aplicacion_Trello.Pages"
+    Shell.FlyoutBehavior="Flyout"
+    Title="Aplicacion_Trello">
+
+    <Shell.FlyoutHeader>
+        <!-- Improved Header with Background -->
+        <Grid BackgroundColor="#2196F3" Padding="16,24,16,16">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Profile Image with Frame -->
+            <Frame Grid.Column="0" Grid.Row="0" Grid.RowSpan="2"
+                   HeightRequest="60" WidthRequest="60"
+                   CornerRadius="30" Padding="0"
+                   IsClippedToBounds="True"
+                   BorderColor="White"
+                   HasShadow="False"
+                   Margin="0,0,12,0">
+                <Image Source="c.png" Aspect="AspectFill"/>
+            </Frame>
+
+            <!-- User Info with Better Typography -->
+            <Label Text="Torres" 
+                   Grid.Column="1" Grid.Row="0"
+                   TextColor="White"
+                   FontSize="20"
+                   FontAttributes="Bold"
+                   VerticalOptions="End"/>
+
+            <Label Text="Desarrollador" 
+                   Grid.Column="1" Grid.Row="1"
+                   TextColor="White"
+                   Opacity="0.9"
+                   FontSize="16"
+                   VerticalOptions="Start"/>
+        </Grid>
+    </Shell.FlyoutHeader>
+
+    <!-- Main Content - Same Structure -->
+    <ShellContent
+        Title="Inicio"
+        ContentTemplate="{DataTemplate pages:HomePage1}"
+        Route="MainPage" />
+
+    <FlyoutItem 
+    FlyoutDisplayOptions="AsMultipleItems">
+
+        <ShellContent Title="Por hacer"
+                      ContentTemplate="{DataTemplate pages:PorhacerPages}"
+                      Icon="b.png"/>
+
+        <ShellContent Title="Haciendo"
+                      ContentTemplate="{DataTemplate pages:PorhacerPages}"
+                      Icon="b.png"/>
+
+        <ShellContent Title="Terminada"
+                      ContentTemplate="{DataTemplate pages:PorhacerPages}"
+                      Icon="b.png"/>
+
+        <ShellContent Title="Con retraso"
+                      ContentTemplate="{DataTemplate pages:TerminadoPages}"
+                      Icon="b.png"/>
+
+    </FlyoutItem>
+
+    <!-- Improved Footer -->
+    <Shell.FlyoutFooter>
+        <Grid Padding="16,12" BackgroundColor="{AppThemeBinding Light=#F5F5F5, Dark=#2D2D2D}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- Separator Line -->
+            <BoxView Grid.Row="0" 
+                     HeightRequest="1" 
+                     Color="{AppThemeBinding Light=#DDDDDD, Dark=#444444}" 
+                     Margin="0,0,0,12"/>
+
+            <!-- Footer Text -->
+            <Label Grid.Row="1"
+                   Text="Desarrollado por: Torres" 
+                   HorizontalOptions="Center" 
+                   FontAttributes="Italic"
+                   TextColor="{AppThemeBinding Light=#666666, Dark=#BBBBBB}"
+                   FontSize="14"/>
+        </Grid>
+    </Shell.FlyoutFooter>
+
+</Shell>
